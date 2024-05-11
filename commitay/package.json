@@ -1,21 +1,77 @@
 {
-  "name": "commitay",
+  "name": "vsc_extension_commitay",
   "displayName": "commitay",
-  "description": "",
+  "description": "Automate the creation of informative and descriptive Commit messages based on your code changes.",
   "version": "0.0.1",
+  "license": "CC0-1.0",
+  "publisher": "andersonbosa",
+  "icon": "icon.png",
+  "categories": [
+    "AI",
+    "Other"
+  ],
+  "homepage": "https://github.com/andersonbosa/vsc_extension_commitay/blob/main/README.md",
+  "bugs": {
+    "url": "https://github.com/andersonbosa/vsc_extension_commitay/issues",
+    "email": "ytj2713151713@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andersonbosa/vsc_extension_commitay"
+  },
+  "author": {
+    "name": "Anderson Bosa",
+    "url": "https://andersonbosa.vercel.app"
+  },
+  "badges": [
+    {
+      "description": "License: CC0-1.0",
+      "url": "https://img.shields.io/badge/License-CC0%201.0-brightgreen.svg",
+      "href": "https://github.com/andersonbosa/vsc_extension_commitay/blob/main/LICENSE"
+    },
+    {
+      "description": "PRs Welcome",
+      "url": "https://img.shields.io/badge/PRs-welcome-brightgreen.svg",
+      "href": "https://github.com/andersonbosa/vsc_extension_commitay"
+    }
+  ],
   "engines": {
     "vscode": "^1.89.0"
   },
-  "categories": [
-    "Other"
-  ],
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "configuration": [
+      {
+        "title": "Commaiter Configuration",
+        "properties": {
+          "commaiter.security.chatgpt.apikey": {
+            "description": "The APIKEY to ChatGPT",
+            "type": "string"
+          },
+          "commaiter.security.googlegemini.apikey": {
+            "description": "The APIKEY to Google Gemini",
+            "type": "string"
+          }
+        }
+      }
+    ],
     "commands": [
       {
-        "command": "commitay.helloWorld",
-        "title": "Hello World"
+        "command": "commaiter.store_apikey.googlegemini",
+        "title": "commaiter: Set APIKEY to Google Gemini IA"
+      },
+      {
+        "command": "commaiter.store_apikey.chatgpt",
+        "title": "commaiter: Set APIKEY to ChatGPT"
+      },
+      {
+        "command": "commaiter.generate.googlegemini",
+        "title": "commaiter: Generate commit with Google Gemini (1.0, free)"
+      },
+      {
+        "command": "commaiter.generate.chatgpt",
+        "title": "commaiter: Generate commit with ChatGPT (3.5, non-free)"
       }
     ]
   },
@@ -42,6 +98,8 @@
     "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4",
     "@vscode/test-cli": "^0.0.9",
-    "@vscode/test-electron": "^2.3.9"
+    "@vscode/test-electron": "^2.3.9",
+    "@google/generative-ai": "^0.11.0",
+    "openai": "^4.43.0"
   }
 }
