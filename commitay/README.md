@@ -5,18 +5,6 @@
 
 ---
 
-<section align="center">
-  <p>
-    <a href="#about">About</a> •
-    <a href="#installation">Installation</a> •
-    <a href="#getting-started">Getting Started</a> •
-    <a href="#contribution">Contribution</a> •
-    <a href="#license">License</a>
-  </p>
-</section>
-
----
-
 ## About
 
 Automate the creation of informative and descriptive commit messages using artificial intelligence!
