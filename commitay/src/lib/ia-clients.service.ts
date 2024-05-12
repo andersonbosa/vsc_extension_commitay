@@ -48,7 +48,7 @@ export namespace AIClients {
 
         if (response.choices.length > 0) {
           // const content = response.choices[0].message.content?.trim()
-          const content = response.choices.map(c => c.message.content).join()?.trim();
+          const content = response.choices.map((c:any) => c.message.content).join()?.trim();
           return { content };
         } else {
           return { content: null };

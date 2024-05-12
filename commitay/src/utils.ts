@@ -27,7 +27,7 @@ export async function generateCommitFromIAClient (iaClient: any): Promise<string
   return 'commit message Mongolia Montenegro';
 }
 
-export async function getGitDiff (): Promise<string> {
+export async function executeGitDiff (): Promise<string> {
   return new Promise((resolve, reject) => {
     exec('git diff --staged', (error, stdout, stderr) => {
       if (error) {
@@ -39,6 +39,16 @@ export async function getGitDiff (): Promise<string> {
   });
 }
 
+export async function getGitDiff () {
+  try {
+    const diffContent = await executeGitDiff();
+    return diffContent;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
 export async function commitChanges (message: string): Promise<void> {
   // Use the `git commit -m` command to commit the changes
   await vscode.commands.executeCommand('git.commit', message);
@@ -46,7 +56,7 @@ export async function commitChanges (message: string): Promise<void> {
 
 export async function copyCommitMessageToClipboard (message: string): Promise<void> {
   await vscode.env.clipboard.writeText(message);
-  vscode.window.showInformationMessage(`commaiter: Commit message copied to clipboard: "${message}"`);
+  vscode.window.showInformationMessage(`commitay: Commit message copied to clipboard: "${message}"`);
 }
 
 export async function generateCommitMessage (content: string): Promise<string> {
@@ -61,16 +71,29 @@ export async function copyToClipboard (text: string) {
   try {
     await vscode.env.clipboard.writeText(text);
   } catch (error) {
-    vscode.window.showErrorMessage(`commaiter: Something goes wrong. Error: ${JSON.stringify(error)}`);
+    vscode.window.showErrorMessage(`commitay: Something goes wrong. Error: ${JSON.stringify(error)}`);
   }
 }
 
 export function showCopyButton (message: string, contentToCopy: string) {
-  const copyBtn = 'Copy';
-  vscode.window.showInformationMessage(message, copyBtn)
+  const btnContent = 'Copy';
+  vscode.window.showInformationMessage(message, btnContent)
     .then(selection => {
-      if (selection === copyBtn) {
+      if (selection === btnContent) {
         copyToClipboard(contentToCopy);
       }
     });
 }
+
+export function showOpenIssueButton (message: string) {
+  const btnContent = 'Open issue';
+  vscode.window.showErrorMessage(message, btnContent)
+    .then(selection => {
+      if (selection === btnContent) {
+        vscode.env.openExternal(
+          vscode.Uri.parse('https://github.com/andersonbosa/vsc_extension_commitay/issues/new/choose')
+        );
+      }
+    });
+}
+

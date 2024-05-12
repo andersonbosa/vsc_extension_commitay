@@ -1,8 +1,8 @@
 {
-  "name": "vsc_extension_commitay",
+  "version": "1.0.0",
+  "name": "vsc-extension-commitay",
   "displayName": "commitay",
   "description": "Automate the creation of informative and descriptive Commit messages based on your code changes.",
-  "version": "0.0.1",
   "license": "CC0-1.0",
   "publisher": "andersonbosa",
   "icon": "icon.png",
@@ -38,17 +38,13 @@
     "vscode": "^1.89.0"
   },
   "activationEvents": [],
-  "main": "./dist/extension.js",
+  "main": "./out/extension.js",
   "contributes": {
     "configuration": [
       {
-        "title": "Commaiter Configuration",
+        "title": "Commitay Configuration",
         "properties": {
-          "commaiter.security.chatgpt.apikey": {
-            "description": "The APIKEY to ChatGPT",
-            "type": "string"
-          },
-          "commaiter.security.googlegemini.apikey": {
+          "commitay.security.googlegemini.apikey": {
             "description": "The APIKEY to Google Gemini",
             "type": "string"
           }
@@ -57,31 +53,20 @@
     ],
     "commands": [
       {
-        "command": "commaiter.store_apikey.googlegemini",
-        "title": "commaiter: Set APIKEY to Google Gemini IA"
+        "command": "commitay.store_apikey.googlegemini",
+        "title": "commitay: Set APIKEY to Google Gemini IA"
       },
       {
-        "command": "commaiter.store_apikey.chatgpt",
-        "title": "commaiter: Set APIKEY to ChatGPT"
-      },
-      {
-        "command": "commaiter.generate.googlegemini",
-        "title": "commaiter: Generate commit with Google Gemini (1.0, free)"
-      },
-      {
-        "command": "commaiter.generate.chatgpt",
-        "title": "commaiter: Generate commit with ChatGPT (3.5, non-free)"
+        "command": "commitay.generate.googlegemini",
+        "title": "commitay: Generate commit with Google Gemini (1.0, free)"
       }
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run package",
-    "compile": "webpack",
-    "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "vscode-test"
   },
@@ -93,9 +78,6 @@
     "@typescript-eslint/parser": "^7.7.1",
     "eslint": "^8.57.0",
     "typescript": "^5.4.5",
-    "ts-loader": "^9.5.1",
-    "webpack": "^5.91.0",
-    "webpack-cli": "^5.1.4",
     "@vscode/test-cli": "^0.0.9",
     "@vscode/test-electron": "^2.3.9",
     "@google/generative-ai": "^0.11.0",

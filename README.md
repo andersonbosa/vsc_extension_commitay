@@ -3,8 +3,8 @@
 [![Main technology](https://img.shields.io/badge/made_to-VSCODE-blue)](#)
 [![Contributions welcome](https://img.shields.io/badge/PRs-WELCOME-green)](#contribution)
 
-
 ---
+
 <section align="center">
   <img src="docs/assets/images/banner.svg" title="Project banner" alt="Project banner" />
   <br>

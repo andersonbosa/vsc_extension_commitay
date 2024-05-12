@@ -1,36 +1,15 @@
 import * as vscode from 'vscode';
 import { COMMANDS, CONFIGURATIONS } from './contants';
 import { AIClients } from './lib/ia-clients.service';
-import { generateCommitFromIAClient, generateCommitPrompt, showCopyButton } from './utils';
-
-
-
-const gitdiffmock = `
-diff --git a/src/commaiter/src/lib/ia-clients.service.ts b/src/commaiter/src/lib/ia-clients.service.ts
-index 43b639f..097255e 100644
---- a/src/commaiter/src/lib/ia-clients.service.ts
-+++ b/src/commaiter/src/lib/ia-clients.service.ts
-@@ -29,8 +29,8 @@ export namespace AIClients {
-     private IA_MODEL = 'gemini-pro'; // alias to gemini-1.0-pro
-     private openai: OpenAI;
- 
--    constructor(private apikey: string) {
--      this.openai = new OpenAI({ apiKey: apikey, });
-+    constructor(private apiKey: string) {
-+      this.openai = new OpenAI({ apiKey });
-     }
- 
-     async prompt (userPrompt: IGenerateCommitInput): Promise<IGenerateCommitOutput> {
-
-`;
+import { generateCommitPrompt, getGitDiff, showCopyButton, showOpenIssueButton } from './utils';
 
 
 export class ExtensionActions {
 
   helloWorld () {
     const handler = () => {
-      vscode.window.showInformationMessage('commaiter: Hello World from commaiter!');
-      console.log('--------- commaiter', vscode.workspace.getConfiguration().get<any>('commaiter'));
+      vscode.window.showInformationMessage('commitay: Hello World from commitay!');
+      console.log('--------- commitay', vscode.workspace.getConfiguration().get<any>('commitay'));
     };
 
     return {
@@ -48,14 +27,14 @@ export class ExtensionActions {
           password: true,
         });
         if (!apikey) {
-          return vscode.window.showErrorMessage('commaiter: Please enter your "APIKEY_GOOGLE_GEMINI" first.');
+          return vscode.window.showErrorMessage('commitay: Please enter your "APIKEY_GOOGLE_GEMINI" first.');
         }
         vscode.workspace.getConfiguration().update(
           CONFIGURATIONS.APIKEY_GOOGLE_GEMINI,
           apikey,
           true, // vscode.ConfigurationTarget.Global
         );
-        vscode.window.showInformationMessage('commaiter: Gemini APIKEY stored successfully.');
+        vscode.window.showInformationMessage('commitay: Gemini APIKEY stored successfully.');
       }
     };
   }
@@ -69,14 +48,14 @@ export class ExtensionActions {
           password: true,
         });
         if (!apikey) {
-          return vscode.window.showErrorMessage('commaiter: Please enter your "APIKEY_CHATGPT" first.');
+          return vscode.window.showErrorMessage('commitay: Please enter your "APIKEY_CHATGPT" first.');
         }
         vscode.workspace.getConfiguration().update(
           CONFIGURATIONS.APIKEY_CHATGPT,
           apikey,
           true, // vscode.ConfigurationTarget.Global
         );
-        vscode.window.showInformationMessage('commaiter: ChatGPT APIKEY stored successfully.');
+        vscode.window.showInformationMessage('commitay: ChatGPT APIKEY stored successfully.');
       }
     };
   }
@@ -88,17 +67,25 @@ export class ExtensionActions {
         try {
           const apikey = vscode.workspace.getConfiguration().get<string>(CONFIGURATIONS.APIKEY_GOOGLE_GEMINI);
           if (!apikey) {
-            return vscode.window.showErrorMessage('commaiter: Please enter your Gemini APIKEY first.');
+            return vscode.window.showErrorMessage('commitay: Please enter your Gemini APIKEY first.');
           }
+
+          // console.log(await vscode.commands.executeCommand('git.diff'))
+          // console.log((await vscode.commands.getCommands()).filter(i => i.includes('diff')));
+          const gitDiff = await getGitDiff();
+          if (!gitDiff) {
+            return vscode.window.showErrorMessage('commitay: It was not possible to obtain git diff.');
+          }
+
           const iaClient = new AIClients.GoogleGeminiAIClient(apikey);
-          const output = await iaClient.prompt({ content: generateCommitPrompt(gitdiffmock) });
+          const output = await iaClient.prompt({ content: generateCommitPrompt(gitDiff) });
           if (!output.content) {
-            throw new Error('commaiter: It was not possible to obtain IA Client output.');
+            throw new Error('commitay: It was not possible to obtain IA Client output.');
           }
-          showCopyButton('commaiter: Commit generated', output.content);
+          showCopyButton('commitay: Commit generated', output.content);
         } catch (error) {
           console.error(error);
-          vscode.window.showErrorMessage('commaiter: Failed to commit changes. See the console for details.');
+          showOpenIssueButton('commitay: Failed to generate commit message. Please open a issue.');
         }
       }
     };
@@ -109,17 +96,7 @@ export class ExtensionActions {
       command: COMMANDS.GENERATE_CHATGPT,
       handler: async () => {
         vscode.window.showWarningMessage('Feature not implemented.');
-        // try {
-        //   const apikey = vscode.workspace.getConfiguration().get<string>(CONFIGURATIONS.APIKEY_CHATGPT);
-        //   if (!apikey) {
-        //     return vscode.window.showErrorMessage('commaiter: Please enter your ChatGPT APIKEY first.');
-        //   }
-        //   const commitMessage = await generateCommitFromIAClient(new AIClients.ChatGPTAIClient(apikey));
-        //   vscode.window.showInformationMessage(`commaiter: commaiter: Committed changes with message: "${commitMessage}"`);
-        // } catch (error) {
-        //   console.error(error);
-        //   vscode.window.showErrorMessage('commaiter: Failed to commit changes. See the console for details.');
-        // }
+        // TODO: Implement ChatGPT support
       }
     };
   }
