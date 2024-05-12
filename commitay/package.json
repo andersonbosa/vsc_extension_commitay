@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "name": "vsc-extension-commitay",
+  "name": "commitay",
   "displayName": "commitay",
   "description": "Automate the creation of informative and descriptive Commit messages based on your code changes.",
   "license": "CC0-1.0",
