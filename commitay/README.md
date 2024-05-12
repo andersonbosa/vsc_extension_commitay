@@ -65,6 +65,6 @@ This project is under the [public domain](LICENSE.md) license.
 ---
 
 <h4>  
-  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/andersonbosa/commitay?style=social">
+  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/andersonbosa/vsc_extension_commitay?style=social">
   | Did you like the repository? Give it a star! 😁
 </h4>
