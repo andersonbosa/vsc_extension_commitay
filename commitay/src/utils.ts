@@ -17,16 +17,6 @@ ${content}
   return prompt;
 }
 
-export async function generateCommitFromIAClient (iaClient: any): Promise<string> {
-  console.log(iaClient);
-  // const content = await this.getGitDiff();
-  // console.log(content);
-  // const commitMessage = await this.generateCommitMessage(content);
-  // await this.copyCommitMessageToClipboard(commitMessage);
-  // await this.commitChanges(commitMessage); // Uncomment this line to actually commit the changes
-  return 'commit message Mongolia Montenegro';
-}
-
 export async function executeGitDiff (): Promise<string> {
   return new Promise((resolve, reject) => {
     exec('git diff --staged', (error, stdout, stderr) => {
@@ -62,7 +52,6 @@ export async function copyCommitMessageToClipboard (message: string): Promise<vo
 export async function generateCommitMessage (content: string): Promise<string> {
   throw new Error('Function not implemented.');
 }
-
 
 export async function copyToClipboard (text: string) {
   if (text.trim() === '') {
